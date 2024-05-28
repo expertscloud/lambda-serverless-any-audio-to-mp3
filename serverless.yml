@@ -1,0 +1,28 @@
+service: aws-lambda-function
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  environment: ${file(env.json)}
+  role: your aws role e.g arn:aws:iam::123:role/serverless-role
+
+custom:
+  dotenv: dotenv.config()
+
+functions:
+  uploadAudio:
+    handler: handler.uploadAudio
+    timeout: 30
+    memorySize: 1024
+    events:
+      - http:
+          path: /uploadAudio
+          method: post
+
+package:
+  exclude:
+    - env.json
+
+plugins:
+  - serverless-offline
